@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#17060d">
+<meta name="description" content="Sen uchun, Yulduz ♡ — romantik interaktiv sahifa">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%99%A1%3C/text%3E%3C/svg%3E">
+<title>Sen uchun, Yulduz ♡</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#0b0206;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+body{min-height:100dvh;overflow-x:hidden}
+html,body{overscroll-behavior-y:auto}
+
+/* ---------- Konvert intro ---------- */
+.intro-toggle{position:fixed;opacity:0;pointer-events:none;width:1px;height:1px}
+body:not(.opened){overflow:hidden!important;min-height:100dvh!important}
+body.opened{touch-action:pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
+.intro{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:18px;overflow:hidden;isolation:isolate;background:radial-gradient(circle at 50% 30%,#5a1530 0%,#2a0815 42%,#0b0206 100%);transition:opacity .65s ease,visibility .65s ease}
+.intro:before,.intro:after{content:"";position:absolute;border-radius:50%;filter:blur(36px);opacity:.42;pointer-events:none;z-index:-1}
+.intro:before{width:220px;height:220px;left:-70px;top:12%;background:#9f174b}
+.intro:after{width:240px;height:240px;right:-90px;bottom:8%;background:#66102e}
+body.opened .intro{opacity:0;visibility:hidden;pointer-events:none}
+body.intro-hidden .intro{display:none}
+.simple-intro-wrap{position:relative;z-index:2;width:min(92vw,520px);text-align:center;display:flex;flex-direction:column;align-items:center}
+.simple-kicker{font-size:11px;letter-spacing:.34em;color:#f4c4d4;margin-bottom:12px;font-weight:700}
+.simple-title{font-family:Georgia,"Times New Roman",serif;font-size:clamp(38px,10vw,62px);font-weight:400;font-style:italic;line-height:1.02;margin:0;color:#fffafc;text-shadow:0 6px 28px #0008}
+.simple-title em{font-weight:400;color:#ffd5e2}
+.simple-sub{margin:14px 0 24px;color:#f6d5df;font-family:Georgia,serif;font-size:clamp(15px,4vw,20px);text-shadow:0 2px 12px rgba(0,0,0,.55)}
+
+.simple-envelope{position:relative;display:block;width:clamp(225px,64vw,320px);aspect-ratio:1.52;margin:2px auto 18px;cursor:pointer;perspective:900px;touch-action:manipulation;filter:drop-shadow(0 24px 34px rgba(0,0,0,.52));transition:transform .25s ease;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;appearance:none;-webkit-appearance:none;background:transparent;border:0;padding:0;color:inherit;font:inherit;outline:none}
+.simple-envelope:active{transform:scale(.985)}
+.env-shadow{position:absolute;left:5%;right:5%;bottom:-10%;height:19%;background:radial-gradient(ellipse at center,rgba(0,0,0,.60),rgba(0,0,0,0) 72%);filter:blur(13px);border-radius:50%}
+.env-body{position:absolute;inset:19% 0 0;border-radius:3px 3px 18px 18px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.10),transparent 18%),linear-gradient(145deg,#eaa4b8 0%,#d97a99 48%,#be4d76 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.65),inset 0 -22px 36px rgba(89,18,49,.18),0 1px 0 rgba(255,255,255,.12);border:1px solid rgba(255,220,232,.22)}
+.env-body:before,.env-body:after{content:"";position:absolute;bottom:-1px;width:68%;height:89%;background:linear-gradient(145deg,#efadc0 0%,#dc7d9d 54%,#c35a80 100%);filter:drop-shadow(0 -1px 0 rgba(255,255,255,.18))}
+.env-body:before{left:-16%;clip-path:polygon(0 100%,100% 100%,0 2%)}
+.env-body:after{right:-16%;clip-path:polygon(0 100%,100% 100%,100% 2%)}
+.env-flap-new{position:absolute;z-index:5;left:0;right:0;top:18.5%;height:55%;transform-origin:50% 0%;transform:rotateX(0deg);background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0) 24%),linear-gradient(180deg,#f4bdcc 0%,#e48ba7 60%,#cf668b 100%);clip-path:polygon(0 0,100% 0,50% 100%);filter:drop-shadow(0 7px 8px rgba(104,23,56,.30));box-shadow:inset 0 1px 0 rgba(255,255,255,.72);backface-visibility:hidden;transition:transform .62s cubic-bezier(.2,.8,.2,1)}
+.env-flap-new:after{content:"";position:absolute;left:2%;right:2%;top:3%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent)}
+.env-paper{position:absolute;z-index:3;left:9%;right:9%;bottom:10%;height:61%;display:none;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,244,248,.97))}
+.env-seal-new{position:absolute;z-index:8;left:50%;top:48%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:27px;color:#fff;background:radial-gradient(circle at 32% 27%,#ff719c 0 7%,transparent 8%),radial-gradient(circle at 38% 32%,#ef3e76 0%,#bd174e 45%,#8f0c39 78%,#6f072c 100%);border:1px solid rgba(255,195,214,.38);box-shadow:0 0 0 4px rgba(255,211,225,.16),0 8px 18px rgba(72,8,34,.55),inset 0 1px 2px rgba(255,255,255,.72),inset 0 -5px 9px rgba(72,0,29,.28);text-shadow:0 1px 1px rgba(74,4,28,.45)}
+.env-seal-new:before{content:"";position:absolute;inset:6px;border-radius:50%;border:1px solid rgba(255,198,217,.28);box-shadow:inset 0 0 0 1px rgba(86,0,31,.16)}
+.simple-envelope:not(.opening)::before{content:"";position:absolute;z-index:7;left:4%;right:4%;bottom:0;height:32%;border-radius:0 0 18px 18px;box-shadow:inset 0 -1px 0 rgba(255,255,255,.24);pointer-events:none}
+.env-spark{position:absolute;z-index:9;color:#ffd5e1;opacity:0;font-size:18px;text-shadow:0 0 12px #ff7ba9;pointer-events:none}
+.s1{left:7%;top:24%}
+.s2{right:9%;top:18%}
+.s3{right:16%;bottom:8%}
+.open-hint{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:999px;color:#fff6f9;background:rgba(91,16,47,.72);border:1px solid rgba(255,155,190,.48);box-shadow:0 10px 28px #0004,inset 0 1px 0 #fff2;font-weight:700;letter-spacing:.02em;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.hint-heart{font-size:22px;color:#ff8cb2;animation:hintPulse 1.5s ease-in-out infinite}
+.opening-status{display:flex;align-items:center;gap:10px;min-height:28px;margin-top:12px;color:#ffe6ee;font-size:12px;letter-spacing:.18em;text-transform:uppercase;opacity:0;visibility:hidden;transform:translateY(5px)}
+.mini-spinner{width:19px;height:19px;border:2px solid #ffb3c966;border-top-color:#fff;border-radius:50%}
+.opening-status.showing{opacity:1;visibility:visible;transform:none;transition:.25s ease}
+.opening-status.showing .mini-spinner{animation:spinMini .72s linear infinite}
+
+@keyframes hintPulse{50%{transform:scale(1.16);filter:drop-shadow(0 0 8px #ff78a7)}}
+@keyframes sealTurn{0%{transform:translate(-50%,-50%) rotate(0) scale(1)}45%{transform:translate(-50%,-50%) rotate(220deg) scale(1.12)}100%{transform:translate(-50%,-50%) rotate(360deg) scale(.3);opacity:0}}
+@keyframes flapOpenFinal{to{transform:rotateX(178deg)}}
+@keyframes sparkPop{0%{opacity:0;transform:scale(.3)}40%{opacity:1}100%{opacity:0;transform:translateY(-25px) scale(1.2)}}
+@keyframes introFadeFinal{0%,78%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
+@keyframes spinMini{to{transform:rotate(360deg)}}
+@keyframes heartBeat{0%,100%{transform:scale(1)}45%{transform:scale(1.08)}60%{transform:scale(.98)}}
+
+#introToggle:checked ~ .intro{animation:introFadeFinal 1.62s ease forwards}
+#introToggle:checked ~ .intro .env-flap-new{animation:flapOpenFinal .62s ease forwards}
+#introToggle:checked ~ .intro .env-seal-new{animation:sealTurn .8s ease forwards}
+#introToggle:checked ~ .intro .env-spark{animation:sparkPop .9s ease .35s forwards}
+#introToggle:checked ~ .intro .s2{animation-delay:.5s}
+#introToggle:checked ~ .intro .s3{animation-delay:.64s}
+#introToggle:checked ~ .intro .open-hint{opacity:0;visibility:hidden;transform:translateY(5px);transition:.25s ease}
+#introToggle:not(:checked) ~ .intro .open-hint{opacity:1;visibility:visible}
+#introToggle:checked ~ .intro .opening-status{opacity:1!important;visibility:visible!important;transform:none!important;transition:.25s ease}
+#introToggle:not(:checked) ~ .intro .env-flap-new{transform:rotateX(0deg)}
+#introToggle:not(:checked) ~ .intro .env-paper{display:none}
+body:not(.opened) .opening-status{opacity:0!important;visibility:hidden!important}
+#introToggle:not(:checked) ~ #main,#introToggle:not(:checked) ~ .memories-wrap{display:none!important}
+#introToggle:checked ~ #main{display:flex!important}
+#introToggle:checked ~ .memories-wrap{display:block!important}
+
+/* ---------- Sahna (hero) ---------- */
+.stage-shell{width:100%;display:flex;justify-content:center;padding:0;background:#0b0206}
+.stage{position:relative;width:min(100vw,1024px);aspect-ratio:2/3;background:#13050a;overflow:hidden}
+@media(min-width:1100px){.stage{width:min(92vw,1280px);max-width:1280px}}
+.art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#13050a}
+.hotspot{position:absolute;display:block;border:0;background:transparent;cursor:pointer;z-index:4;-webkit-tap-highlight-color:transparent;padding:0;margin:0;touch-action:manipulation}
+#musicHot{left:79.3%;top:9.4%;width:16.5%;height:4.3%;border-radius:999px}
+#letterHot{left:7.6%;top:65.7%;width:19%;height:10.8%;border-radius:24px}
+#reasonsHot{left:29.3%;top:65.7%;width:19%;height:10.8%;border-radius:24px}
+#memoryHot{left:51%;top:65.7%;width:19%;height:10.8%;border-radius:24px}
+#heartHot{left:73%;top:65.7%;width:19%;height:10.8%;border-radius:24px}
+.hotspot:focus-visible{outline:2px solid #ffd8e6;outline-offset:3px}
+.music-state{position:absolute;right:7.7%;top:8.2%;z-index:6;font-size:10px;letter-spacing:.08em;color:#ffd9e6;opacity:0;transition:opacity .25s;pointer-events:none}
+body.playing .music-state{opacity:1}
+.native-audio-hit{position:absolute;z-index:7;left:79.3%;top:9.4%;width:5.2%;height:4.3%;opacity:.01;overflow:hidden;pointer-events:none}
+.native-audio-hit audio{width:60px;height:60px;transform:translate(-2px,-2px)}
+
+/* ---------- Xotiralar ---------- */
+.memories-wrap{width:min(100%,1024px);margin:0 auto;padding:52px 28px 90px;background:linear-gradient(180deg,#0b0206 0%,#18060d 18%,#0b0206 100%);position:relative;overflow:hidden}
+@media(min-width:1100px){.memories-wrap{width:min(92vw,1280px);max-width:1280px;padding-left:44px;padding-right:44px}}
+.memories-wrap:before,.memories-wrap:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;filter:blur(70px);opacity:.15;pointer-events:none}
+.memories-wrap:before{left:-120px;top:120px;background:#c72c64}
+.memories-wrap:after{right:-130px;bottom:100px;background:#8f214f}
+.section-kicker{text-align:center;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#e995b2;margin-bottom:10px}
+.section-title{text-align:center;font-family:Georgia,serif;font-weight:500;font-style:italic;font-size:clamp(32px,5vw,50px);margin:0 0 10px;color:#fff}
+.section-copy{text-align:center;max-width:620px;margin:0 auto 34px;color:#e7cbd5;line-height:1.65;font-family:Georgia,serif;font-size:17px}
+
+/* ---------- Foto-grid ---------- */
+.photo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:56px;align-items:stretch}
+.photo-card{position:relative;display:grid;grid-template-rows:auto 1fr;min-height:100%;background:linear-gradient(145deg,#4b1025,#17050d);border:1px solid #f06b9b55;border-radius:28px;padding:10px;box-shadow:0 18px 45px #0009;overflow:hidden}
+.photo-frame{position:relative;aspect-ratio:3/4;border-radius:21px;overflow:hidden;background:#090205}
+.photo-frame img{width:100%;height:100%;display:block;object-fit:cover;background:#090205;aspect-ratio:auto}
+.photo-frame:after{content:"";position:absolute;inset:0;border:1px solid #fff2;border-radius:21px;pointer-events:none}
+.photo-grid .photo-card:nth-child(2) .photo-frame img{object-position:center 42%}
+.photo-note{display:flex;min-height:126px;flex-direction:column;justify-content:center;padding:18px 12px 15px;text-align:center}
+.photo-note h3{font-family:Georgia,serif;font-size:20px;margin:0 0 7px;font-weight:500;color:#fff}
+.photo-note p{font-family:Georgia,serif;font-size:14px;line-height:1.5;color:#e7cbd5;margin:0}
+.archive-card:before{content:"ARXIV";position:absolute;top:19px;left:19px;z-index:2;background:#260912cc;border:1px solid #ff91b777;color:#ffd6e4;font-size:10px;letter-spacing:.2em;padding:7px 10px;border-radius:999px}
+.memory-divider{height:1px;background:linear-gradient(90deg,transparent,#ff83ad66,transparent);margin:50px 0 35px}
+
+/* ---------- Video grid ---------- */
+.video-head{margin-top:12px}
+.video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+.video-card{position:relative;overflow:hidden;background:linear-gradient(145deg,#3a0b1b,#14040a);border:1px solid #f06b9b55;border-radius:26px;padding:10px;box-shadow:0 18px 42px #0008}
+.video-shell{position:relative;width:100%;aspect-ratio:9/16;min-height:200px;border-radius:19px;overflow:hidden;background:#000;isolation:isolate}
+.video-card:nth-child(3) .video-shell{aspect-ratio:3/4}
+.video-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;pointer-events:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none;aspect-ratio:auto}
+.video-shell:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 -70px 70px -55px rgba(0,0,0,.48);z-index:2;border-radius:inherit}
+.video-launch{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;min-width:126px;min-height:82px;padding:10px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;border-radius:18px;background:rgba(30,4,14,.50);color:#fff;border:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;font:inherit;-webkit-backdrop-filter:none;backdrop-filter:none}
+.video-launch:active{transform:translate(-50%,-50%) scale(.97)}
+.video-play-icon{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;padding-left:4px;background:rgba(117,18,55,.90);border:1px solid rgba(255,210,225,.52);box-shadow:0 8px 24px rgba(0,0,0,.34);font-size:24px}
+.video-play-text{font:600 14px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-shadow:0 2px 8px #000}
+.video-runtime{position:absolute;inset:0;z-index:4;width:100%;height:100%;object-fit:contain;background:#000;touch-action:manipulation;border-radius:inherit;outline:none}
+.video-caption{font-family:Georgia,serif;text-align:center;padding:13px 8px 8px;color:#f6dfe7;font-size:16px}
+.ending-note{text-align:center;margin-top:46px;padding:30px 18px;border:1px solid #e56c9655;border-radius:28px;background:linear-gradient(145deg,#3e0d1d88,#17050d88)}
+.ending-note .big{font-family:Georgia,serif;font-size:clamp(28px,5vw,44px);font-style:italic;margin-bottom:10px}
+.ending-note .small{font-family:Georgia,serif;color:#e7cbd5;font-size:16px}
+
+/* ---------- Modallar ---------- */
+.overlay{position:fixed;inset:0;z-index:40;background:rgba(6,0,3,.78);display:none;align-items:center;justify-content:center;padding:22px;overscroll-behavior:contain;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.overlay.is-open{display:flex}
+.card{position:relative;width:min(92vw,460px);max-height:min(88dvh,760px);overflow:auto;scrollbar-width:none;border:1px solid #e0789a80;border-radius:30px;padding:34px 26px 28px;text-align:center;background:linear-gradient(145deg,rgba(100,22,52,.96),rgba(25,4,13,.98));box-shadow:0 26px 70px #000b,inset 0 1px #fff2}
+.card::-webkit-scrollbar{display:none}
+.close{position:absolute;right:16px;top:14px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;text-decoration:none;border:1px solid #ffffff35;background:#ffffff0e;font-size:24px;cursor:pointer;touch-action:manipulation}
+.eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#f1a9c1}
+.card h2{font-family:Georgia,serif;font-style:italic;font-weight:500;font-size:34px;margin:12px 0 14px}
+.card p{font-family:Georgia,serif;font-size:18px;line-height:1.65;color:#f7e4ea;margin:0}
+.tiny-heart{font-size:26px;margin-top:18px;color:#ff6f9f}
+.reason-list{display:grid;gap:10px;margin-top:18px;text-align:left}
+.reason-list>div{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:center;padding:12px 13px;border:1px solid #f28bad33;border-radius:16px;background:#fff0}
+.reason-list b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#f24b82,#a91850);box-shadow:0 6px 18px #bd1f5a44;font-size:14px}
+.reason-list span{font-family:Georgia,serif;font-size:15px;line-height:1.45;color:#f7e4ea}
+.memory-list{display:grid;gap:10px;margin-top:17px}
+.memory-list span{display:block;padding:13px 14px;border-radius:15px;background:#fff0;border:1px solid #fff2;font-family:Georgia,serif;line-height:1.45;color:#f8e8ee}
+.heart-pulse{font-size:56px;color:#ff709e;margin-top:14px;animation:heartBeat 1.8s ease-in-out infinite;text-shadow:0 0 25px #ff4f8c77}
+
+/* ---------- Render samaradorligi ---------- */
+@supports(content-visibility:auto){
+  .photo-card,.video-card{content-visibility:auto;contain-intrinsic-size:auto 520px}
+  .memories-wrap{content-visibility:auto;contain-intrinsic-size:auto 3200px}
+}
+.embedded-media-payload{display:none!important}
+
+/* ================= MOBILE (max-width:760px) ================= */
+@media(max-width:760px){
+  .intro{padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom));background:radial-gradient(circle at 50% 25%,#57142e 0%,#260711 48%,#090104 100%)}
+  .intro:before,.intro:after{filter:blur(26px)}
+  .simple-intro-wrap{width:min(92vw,360px);max-height:calc(100dvh - max(28px,env(safe-area-inset-top) + env(safe-area-inset-bottom)))}
+  .simple-kicker{font-size:10px;letter-spacing:.28em;margin-bottom:8px}
+  .simple-title{font-size:clamp(34px,10.8vw,46px);line-height:1.02}
+  .simple-sub{font-size:15px;line-height:1.35;margin:10px 0 14px;padding:0 10px}
+  .simple-envelope{width:min(68vw,255px);margin:0 auto 12px;min-width:0;min-height:0}
+  .env-seal-new{width:50px;height:50px;font-size:23px}
+  .open-hint{padding:10px 16px;font-size:13px;min-height:46px;justify-content:center}
+  .opening-status{margin-top:8px;font-size:10px;letter-spacing:.14em}
+  .stage{width:100vw}
+  .memories-wrap{width:100%;padding:34px 12px 64px}
+  .memories-wrap:before,.memories-wrap:after{display:none}
+  .section-title{font-size:clamp(30px,8vw,40px);line-height:1.08}
+  .section-copy{font-size:15px;line-height:1.55;margin-bottom:24px;padding:0 4px}
+  .photo-grid{grid-template-columns:1fr;gap:16px;margin-bottom:42px}
+  .photo-card{width:100%;max-width:520px;margin:0 auto;padding:8px;border-radius:22px;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+  .photo-frame{aspect-ratio:4/5;border-radius:17px}
+  .photo-note{min-height:106px;padding:14px 10px 12px}
+  .photo-note h3{font-size:19px}
+  .video-grid{grid-template-columns:1fr!important;gap:16px!important}
+  .video-card{padding:8px;border-radius:22px;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+  .video-shell{border-radius:16px;min-height:0}
+  .video-launch{min-width:108px;min-height:70px;padding:7px 11px}
+  .video-play-icon{width:44px;height:44px;font-size:18px}
+  .video-play-text{font-size:11px}
+  .video-caption{font-size:15px;line-height:1.4;padding:11px 8px 7px}
+  .overlay{padding:16px;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .card{border-radius:24px;padding:30px 18px 22px;width:min(94vw,460px)}
+  .card h2{font-size:30px}
+  .card p{font-size:17px}
+  .reason-list>div{grid-template-columns:30px 1fr;padding:10px 11px}
+  .reason-list b{width:30px;height:30px}
+  .reason-list span{font-size:14px}
+  .memory-list span{font-size:15px}
+  .ending-note{box-shadow:0 6px 18px rgba(0,0,0,.28)}
+}
+@media(max-width:390px){
+  .simple-intro-wrap{width:94vw}
+  .simple-title{font-size:34px}
+  .simple-sub{font-size:14px;padding:0 6px}
+  .simple-envelope{width:min(66vw,225px)}
+  .photo-note{min-height:98px}
+  .card h2{font-size:28px}
+  .card p{font-size:16px}
+}
+@media(max-height:680px) and (max-width:600px){
+  .simple-kicker{margin-bottom:5px}
+  .simple-title{font-size:32px}
+  .simple-sub{margin:7px 0 10px;font-size:13px}
+  .simple-envelope{width:min(48vw,195px)}
+  .open-hint{padding:8px 14px}
+}
+@media(min-width:1100px){
+  .photo-grid,.video-grid{gap:24px}
+  .photo-card,.video-card{box-shadow:0 22px 58px rgba(0,0,0,.48)}
+}
+</style>
+</head>
+<body>
+<input class="intro-toggle" type="checkbox" id="introToggle" aria-hidden="true" autocomplete="off">
+<div class="intro" id="intro">
+  <div class="simple-intro-wrap">
+    <div class="simple-kicker">FAQAT SEN UCHUN</div>
+    <h1 class="simple-title">Sen uchun,<br><em>Yulduz ♡</em></h1>
+    <p class="simple-sub">Ba’zi hislar so’zsiz ham yetib boradi...</p>
+    <label class="simple-envelope" id="openEnvelope" for="introToggle" role="button" aria-label="Konvertni ochish">
+      <span class="env-shadow"></span>
+      <span class="env-paper"><b>Yulduz ♡</b><small>bu sahifa faqat sen uchun</small></span>
+      <span class="env-body"></span>
+      <span class="env-flap-new"></span>
+      <span class="env-seal-new">♡</span>
+      <span class="env-spark s1">✦</span><span class="env-spark s2">✦</span><span class="env-spark s3">♡</span>
+    </label>
+    <label class="open-hint" id="openHint" for="introToggle" role="button" tabindex="0" aria-label="Konvertni ochish"><span class="hint-heart">♡</span><span>Konvertga teg</span></label>
+    <div class="opening-status"><span class="mini-spinner"></span><span>Ochilyapti...</span></div>
+  </div>
+</div>
+<main class="stage-shell" id="main">
+  <section class="stage" aria-label="Yulduz uchun romantik sahifa">
+    <img width="1280" height="1920" decoding="async" fetchpriority="high" class="art" src="assets/img/hero.jpg" alt="Yulduz uchun asosiy sahifa">
+    <button class="hotspot" id="musicHot" type="button" aria-label="Musiqani yoqish yoki pauza qilish"></button>
+    <a class="hotspot" id="letterHot" href="#letter" aria-label="Senga maktub"></a>
+    <a class="hotspot" id="reasonsHot" href="#reasons" aria-label="5 ta sabab"></a>
+    <a class="hotspot" id="memoryHot" href="#memory" aria-label="Xotira qutisi"></a>
+    <a class="hotspot" id="heartHot" href="#heart" aria-label="Yurakka teg"></a>
+    <div class="music-state" id="musicState">♪ aytyapti</div>
+    <div class="native-audio-hit" aria-hidden="true"><audio id="song" controls preload="none" playsinline data-src="assets/audio/song.mp3"><source type="audio/mpeg"></audio></div>
+  </section>
+</main>
+
+<section class="memories-wrap" aria-label="Yulduz bilan xotiralar">
+  <div class="section-kicker">Senga atalgan xotiralar</div>
+  <h2 class="section-title">Har bir kadrda boshqa bir his ♡</h2>
+  <p class="section-copy">Bu yerda hech narsa takrorlanmaydi: har bir surat o’z hikoyasida, har bir video esa o’z lahzasida qoladi.</p>
+  <div class="photo-grid">
+<article class="photo-card "><div class="photo-frame"><img width="768" height="1024" loading="lazy" decoding="async" src="assets/img/photo1.jpg" alt="Yulduz xotira surati 1"></div><div class="photo-note"><h3>Bir lahza — bir iliqlik</h3><p>Ba’zi suratlar shunchaki rasm emas. Ular qayta ko’rsang ham o’sha hissini saqlab qoladi.</p></div></article><article class="photo-card "><div class="photo-frame"><img width="768" height="1366" loading="lazy" decoding="async" src="assets/img/photo2.jpg" alt="Yulduz xotira surati 2"></div><div class="photo-note"><h3>Nigohda qolgan sokinlik</h3><p>Ba’zan bir qarashning o’zi ko’p gapdan ko’ra ko’proq esda qoladi.</p></div></article><article class="photo-card archive-card"><div class="photo-frame"><img width="768" height="1024" loading="lazy" decoding="async" src="assets/img/photo3.jpg" alt="Yulduz xotira surati 3"></div><div class="photo-note"><h3>Arxivdan qolgan eng iliq kadr</h3><p>Bu suratni alohida saqlagim kelgan. Sababi oddiy: ko’rsam, beixtiyor kulgim keladi.</p></div></article>
+  </div>
+  <div class="memory-divider"></div>
+  <div class="section-kicker video-head">Jonli xotiralar</div>
+  <h2 class="section-title">Ba’zi lahzalar harakatda chiroyliroq</h2>
+  <p class="section-copy">Har bir videoni alohida ochib ko’rish mumkin. Notebook va desktopda tasvir proporsiyasi saqlanadi. Videolar 1080p Full HD aniqlikda tayyorlangan.</p>
+  <div class="video-grid">
+<article class="video-card"><div class="video-shell" data-src="assets/video/video1.mp4"><img width="640" height="1138" class="video-poster" loading="lazy" decoding="async" src="assets/img/poster1.jpg" alt="Video 1 muqovasi"><button class="video-launch" type="button" aria-label="Videoni ochish"><span class="video-play-icon">▶</span><span class="video-play-text">Videoni ochish</span></button></div><div class="video-caption">Shu lahza esda qolgan</div></article>
+<article class="video-card"><div class="video-shell" data-src="assets/video/video2.mp4"><img width="640" height="1138" class="video-poster" loading="lazy" decoding="async" src="assets/img/poster2.jpg" alt="Video 2 muqovasi"><button class="video-launch" type="button" aria-label="Videoni ochish"><span class="video-play-icon">▶</span><span class="video-play-text">Videoni ochish</span></button></div><div class="video-caption">Bir oz kulgi, bir oz xotira</div></article>
+<article class="video-card"><div class="video-shell" data-src="assets/video/video3.mp4"><img width="640" height="854" class="video-poster" loading="lazy" decoding="async" src="assets/img/poster3.jpg" alt="Video 3 muqovasi"><button class="video-launch" type="button" aria-label="Videoni ochish"><span class="video-play-icon">▶</span><span class="video-play-text">Videoni ochish</span></button></div><div class="video-caption">Oddiy, ammo qadrli</div></article>
+<article class="video-card"><div class="video-shell" data-src="assets/video/video4.mp4"><img width="640" height="1138" class="video-poster" loading="lazy" decoding="async" src="assets/img/poster4.jpg" alt="Video 4 muqovasi"><button class="video-launch" type="button" aria-label="Videoni ochish"><span class="video-play-icon">▶</span><span class="video-play-text">Videoni ochish</span></button></div><div class="video-caption">Ko’rsam kayfiyatim o’zgaradi</div></article>
+<article class="video-card"><div class="video-shell" data-src="assets/video/video5.mp4"><img width="640" height="1138" class="video-poster" loading="lazy" decoding="async" src="assets/img/poster5.jpg" alt="Video 5 muqovasi"><button class="video-launch" type="button" aria-label="Videoni ochish"><span class="video-play-icon">▶</span><span class="video-play-text">Videoni ochish</span></button></div><div class="video-caption">Yurakda qoladigan kichik kadr</div></article>
+<article class="video-card"><div class="video-shell" data-src="assets/video/video6.mp4"><img width="640" height="1138" class="video-poster" loading="lazy" decoding="async" src="assets/img/poster6.jpg" alt="Video 6 muqovasi"><button class="video-launch" type="button" aria-label="Videoni ochish"><span class="video-play-icon">▶</span><span class="video-play-text">Videoni ochish</span></button></div><div class="video-caption">Bir necha soniya — katta xotira</div></article>
+<article class="video-card"><div class="video-shell" data-src="assets/video/video7.mp4"><img width="640" height="1138" class="video-poster" loading="lazy" decoding="async" src="assets/img/poster7.jpg" alt="Video 7 muqovasi"><button class="video-launch" type="button" aria-label="Videoni ochish"><span class="video-play-icon">▶</span><span class="video-play-text">Videoni ochish</span></button></div><div class="video-caption">Sokin xotira</div></article>
+<article class="video-card"><div class="video-shell" data-src="assets/video/video8.mp4"><img width="640" height="1140" class="video-poster" loading="lazy" decoding="async" src="assets/img/poster8.jpg" alt="Video 8 muqovasi"><button class="video-launch" type="button" aria-label="Videoni ochish"><span class="video-play-icon">▶</span><span class="video-play-text">Videoni ochish</span></button></div><div class="video-caption">Arxivdagi alohida video</div></article>
+  </div>
+  <div class="ending-note">
+    <div class="big">Ba’zi xotiralar saqlanadi. Ba’zilari esa yurakda qoladi.</div>
+    <div class="small">Bu sahifa — ikkalasidan ham ozgina. ♡</div>
+  </div>
+</section>
+
+<div class="overlay" id="letter">
+  <div class="card">
+    <a class="close js-close" href="#" aria-label="Yopish">×</a>
+    <div class="eyebrow">Senga maktub</div>
+    <h2>Aytilmay qolgan gap</h2>
+    <p>Xafa qilgan joylarimni oqlamayman. Men uchun eng muhimi — seni eshitish, tushunish va qalbingga ehtiyot bo’lish.</p>
+    <div class="tiny-heart">♡</div>
+  </div>
+</div>
+<div class="overlay" id="reasons">
+  <div class="card reasons-card">
+    <a class="close js-close" href="#" aria-label="Yopish">×</a>
+    <div class="eyebrow">5 ta sabab</div>
+    <h2>Nega aynan sen?</h2>
+    <div class="reason-list">
+      <div><b>1</b><span>Sen bilan oddiy lahzalar ham xotiraga aylanadi.</span></div>
+      <div><b>2</b><span>Sening yoningda ichimdagi shovqin bir oz jim bo’ladi.</span></div>
+      <div><b>3</b><span>Tabassuming kayfiyatimni hech kutilmaganda o’zgartiradi.</span></div>
+      <div><b>4</b><span>Sening samimiyligingni boshqa hech kimnikiga o’xshata olmayman.</span></div>
+      <div><b>5</b><span>Va eng sodda sabab: qalbim seni alohida tanigan.</span></div>
+    </div>
+    <div class="tiny-heart">✦</div>
+  </div>
+</div>
+<div class="overlay" id="memory">
+  <div class="card memory-card">
+    <a class="close js-close" href="#" aria-label="Yopish">×</a>
+    <div class="eyebrow">Xotira qutisi</div>
+    <h2>Mayda, lekin qadrli</h2>
+    <div class="memory-list">
+      <span>Bir qarash — uzoq esda qoladi.</span>
+      <span>Bir kulgi — kunni o’zgartiradi.</span>
+      <span>Bir necha soniya — ba’zan butun xotiraga aylanadi.</span>
+    </div>
+    <div class="tiny-heart">♡</div>
+  </div>
+</div>
+<div class="overlay" id="heart">
+  <div class="card heart-card">
+    <a class="close js-close" href="#" aria-label="Yopish">×</a>
+    <div class="eyebrow">Yurakka teg</div>
+    <h2>Eng sodda haqiqat</h2>
+    <p>Bu sahifaning hammasi bitta narsani aytadi: sen men uchun oddiy inson emassan.</p>
+    <div class="heart-pulse">♡</div>
+  </div>
+</div>
+<script>
+
+(function(){
+  'use strict';
+
+  function $(sel,ctx){ return (ctx||document).querySelector(sel); }
+  function $all(sel,ctx){ return Array.prototype.slice.call((ctx||document).querySelectorAll(sel)); }
+
+  try{ if('scrollRestoration' in history) history.scrollRestoration='manual'; }catch(e){}
+  try{ window.scrollTo(0,0); }catch(e){}
+
+  function base64ToBlobUrl(b64,mime){
+    var slice=1024*1024, parts=[], i, raw, arr, j;
+    for(i=0;i<b64.length;i+=slice){
+      raw=atob(b64.slice(i,i+slice));
+      arr=new Uint8Array(raw.length);
+      for(j=0;j<raw.length;j++) arr[j]=raw.charCodeAt(j);
+      parts.push(arr);
+    }
+    return URL.createObjectURL(new Blob(parts,{type:mime}));
+  }
+
+  /* ---------------- Konvert ---------------- */
+  var body=document.body;
+  var gate=$('#introToggle');
+  var open=$('#openEnvelope');
+  var opening=false;
+  if(gate) gate.checked=false;
+  body.classList.remove('opened');
+
+  function finishOpen(){
+    try{ window.scrollTo(0,0); }catch(e){}
+    body.classList.add('opened');
+    opening=false;
+    try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+    setTimeout(function(){
+      if(body.classList.contains('opened')) body.classList.add('intro-hidden');
+    },760);
+  }
+  function beginOpen(){
+    if(opening || body.classList.contains('opened')) return;
+    opening=true;
+    if(open) open.classList.add('opening');
+    var st=$('.opening-status'); if(st) st.classList.add('showing');
+    setTimeout(finishOpen,1550);
+  }
+  if(gate) gate.addEventListener('change',function(){ if(gate.checked) beginOpen(); });
+  var hint=$('#openHint');
+  if(hint) hint.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); if(gate) gate.checked=true; }
+  });
+
+  /* ---------------- Modallar ---------------- */
+  var savedScroll=0;
+  function lockScroll(){ document.documentElement.style.overflow='hidden'; }
+  function unlockScroll(){ document.documentElement.style.overflow=''; }
+  function closeOverlays(){
+    $all('.overlay.is-open').forEach(function(o){ o.classList.remove('is-open'); });
+  }
+  $all('a.hotspot[href^="#"]').forEach(function(a){
+    var modal=document.getElementById(a.getAttribute('href').slice(1));
+    if(!modal) return;
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      savedScroll=window.scrollY||0;
+      closeOverlays();
+      modal.classList.add('is-open');
+      lockScroll();
+    });
+  });
+  function restoreScroll(){
+    var y=savedScroll;
+    requestAnimationFrame(function(){ try{ window.scrollTo(0,y); }catch(e){} });
+  }
+  $all('.js-close').forEach(function(c){
+    c.addEventListener('click',function(e){
+      e.preventDefault();
+      var ov=c.closest('.overlay'); if(ov) ov.classList.remove('is-open');
+      unlockScroll(); restoreScroll();
+    });
+  });
+  $all('.overlay').forEach(function(ov){
+    ov.addEventListener('click',function(e){
+      if(e.target===ov){ ov.classList.remove('is-open'); unlockScroll(); restoreScroll(); }
+    });
+  });
+
+  /* ---------------- Musiqa ---------------- */
+  var audioEl=$('#song');
+  var audioObjectUrl='';
+  var audioPayloadId=audioEl&&audioEl.getAttribute('data-payload')||'';
+  var audioSrc=audioEl&&audioEl.getAttribute('data-src')||'';
+  function syncMusicState(){ if(audioEl) body.classList.toggle('playing', !audioEl.paused && !audioEl.ended); }
+  function loadAudio(){
+    if(!audioEl || audioObjectUrl) return;
+    try{
+      if(audioEl.getAttribute('src')) return; // allaqachon yuklangan — qayta load() qilma
+      if(audioPayloadId){
+        var payload=document.getElementById(audioPayloadId);
+        if(payload){
+          audioObjectUrl=base64ToBlobUrl(payload.textContent.trim(),'audio/mpeg');
+          audioEl.src=audioObjectUrl;
+        }
+      } else if(audioSrc){
+        audioEl.src=audioSrc;
+      }
+      audioEl.load();
+    }catch(e){}
+  }
+  function toggleMusic(e){
+    if(e){ e.preventDefault(); e.stopPropagation(); }
+    if(!audioEl) return;
+    loadAudio();
+    try{
+      if(audioEl.paused){ var p=audioEl.play(); if(p&&p.catch) p.catch(function(){ syncMusicState(); }); }
+      else audioEl.pause();
+    }catch(err){}
+    syncMusicState();
+  }
+  var musicBtn=$('#musicHot');
+  if(musicBtn) musicBtn.addEventListener('click',toggleMusic);
+  if(audioEl){
+    audioEl.addEventListener('play',syncMusicState);
+    audioEl.addEventListener('pause',syncMusicState);
+    audioEl.addEventListener('ended',syncMusicState);
+  }
+
+  /* ---------------- Videolar: bitta aktiv video ---------------- */
+  var activeCard=null;
+  function clearVideo(card,removeEl){
+    if(!card) return;
+    var v=card.querySelector('video.video-runtime');
+    if(v){
+      try{ v.pause(); }catch(e){}
+      try{ v.removeAttribute('src'); v.src=''; }catch(e){}
+      try{ v.load(); }catch(e){}
+      if(removeEl && v.parentNode) v.parentNode.removeChild(v);
+    }
+    var u=card.getAttribute('data-object-url');
+    if(u){ try{ URL.revokeObjectURL(u); }catch(e){} card.removeAttribute('data-object-url'); }
+  }
+  function setBtnText(btn,txt){ var el=btn.querySelector('.video-play-text'); if(el) el.textContent=txt; }
+  function resetCard(card,msg){
+    clearVideo(card,true);
+    var poster=card.querySelector('.video-poster');
+    var btn=card.querySelector('.video-launch');
+    if(poster) poster.hidden=false;
+    if(btn){ btn.hidden=false; btn.disabled=false; setBtnText(btn,msg||'Videoni ochish'); }
+    if(activeCard===card) activeCard=null;
+  }
+  function playVideo(card){
+    if(!card) return;
+    if(activeCard && activeCard!==card) resetCard(activeCard);
+    var existing=card.querySelector('video.video-runtime');
+    if(existing){
+      var pp=existing.play(); if(pp&&pp.catch) pp.catch(function(){});
+      if(card!==activeCard) activeCard=card;
+      return;
+    }
+    var shell=card.querySelector('.video-shell');
+    var payloadId=shell&&shell.getAttribute('data-payload')||'';
+    var src=shell&&shell.getAttribute('data-src')||'';
+    if(!payloadId && !src) return;
+    var btn=card.querySelector('.video-launch'), poster=card.querySelector('.video-poster');
+    if(btn){ btn.disabled=true; setBtnText(btn,'Ochilyapti...'); }
+    setTimeout(function(){
+      var v=document.createElement('video');
+      v.className='video-runtime';
+      v.controls=true;
+      v.preload='none';
+      v.setAttribute('playsinline','');
+      v.setAttribute('webkit-playsinline','');
+      v.setAttribute('x5-playsinline','');
+      v.setAttribute('disablepictureinpicture','');
+      v.addEventListener('error',function(){ resetCard(card,'Qayta urinib ko‘ring'); });
+      try{
+        if(src){
+          v.src=src;
+        }else{
+          var payload=document.getElementById(payloadId);
+          if(!payload) throw new Error('no payload');
+          var b64=payload.textContent.trim();
+          if(!b64 || b64.length<100) throw new Error('empty payload');
+          var url=base64ToBlobUrl(b64,'video/mp4');
+          card.setAttribute('data-object-url',url);
+          v.src=url;
+        }
+        shell.appendChild(v);
+        card.classList.add('is-active');
+        if(poster) poster.hidden=true;
+        if(btn){ btn.hidden=true; btn.disabled=false; }
+        activeCard=card;
+        var p=v.play();
+        if(p && p.catch) p.catch(function(){});
+      }catch(err){
+        if(btn){ btn.hidden=false; btn.disabled=false; setBtnText(btn,'Qayta urinib ko‘ring'); }
+        var u2=card.getAttribute('data-object-url');
+        if(u2){ try{ URL.revokeObjectURL(u2); }catch(e){} card.removeAttribute('data-object-url'); }
+      }
+    },30);
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target&&e.target.closest?e.target.closest('.video-launch'):null;
+    if(!b) return;
+    e.preventDefault(); e.stopPropagation();
+    playVideo(b.closest('.video-card'));
+  },false);
+
+  /* ---------------- Hayot sikli: memory leak'lardan himoya ---------------- */
+  function onHide(){
+    if(activeCard) resetCard(activeCard);
+    if(audioEl){
+      try{ audioEl.pause(); }catch(e){}
+      if(audioObjectUrl){
+        try{ URL.revokeObjectURL(audioObjectUrl); }catch(e){}
+        audioObjectUrl='';
+        try{ audioEl.removeAttribute('src'); }catch(e){}
+        try{ audioEl.load(); }catch(e){}
+      }
+    }
+    syncMusicState();
+  }
+  window.addEventListener('pagehide',onHide);
+  document.addEventListener('visibilitychange',function(){ if(document.hidden) onHide(); });
+
+  if(location.hash) try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+  window.addEventListener('pageshow',function(){
+    if(!body.classList.contains('opened')){
+      if(gate) gate.checked=false;
+      try{ window.scrollTo(0,0); }catch(e){}
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
